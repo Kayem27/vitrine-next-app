@@ -1,39 +1,43 @@
 import Link from "next/link";
+import Meta from "../../components/Meta";
 
 const article = ({ article }) => {
   return (
-    <div>
-      <div className="article-page">
-        <h2>{article.title}</h2>
-        <p>{article.body}</p>
-        <Link href="/">Revenir à l'acceuil</Link>
-      </div>
+    <div className="article-page">
+      <Meta title={article.title} />
+      <h2>{article.title}</h2>
+      <p>{article.body}</p>
+      <Link href="/">Revenir à l{"'"}accueil</Link>
     </div>
   );
 };
 
 export default article;
 
-// Précharger coté serveur
+// getStaticProps ne fonctionnerait pas seul
 export const getStaticProps = async (context) => {
-//   console.log(context.params.id); 
   const res = await fetch(
-    "https://jsonplaceholder.typicode.com/posts/" + context.params.id
+    `https://jsonplaceholder.typicode.com/posts/${context.params.id}`
   );
 
   const article = await res.json();
-  return{
-      props: {
-        article,
-      },
-  } 
+  return {
+    props: {
+      article,
+    },
+  };
 };
 
-export const getStaticPath = async () => {
-  const res = await fetch("https://jsonplaceholder.typicode.com/posts");
+export const getStaticPaths = async () => {
+  const res = await fetch(`https://jsonplaceholder.typicode.com/posts/`);
 
   const articles = await res.json();
-//   On prépare les id dans un objet Path {id:1, id:2, ...}
-const ids = articles.map((article) => article.id);
-console.log(ids);
+  // Préparer les id pour le path (id: 1, id: 2...)
+  const ids = articles.map((article) => article.id);
+  const paths = ids.map((id) => ({ params: { id: id.toString() } }));
+
+  return {
+    paths,
+    fallback: false,
+  };
 };

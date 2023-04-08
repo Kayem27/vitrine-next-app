@@ -1,13 +1,25 @@
-import Meta from "@/components/Meta";
+import React from "react";
+import Meta from "../components/Meta";
+import { projects } from "../projectsData";
+import Link from "next/link";
 
 const portfolio = () => {
   return (
     <div>
       <Meta
-        title={"Portfolio dev, les derniers projet réalisés"}
-        description={"J'écris une belle description de 70 mots "}
+        title={"Portoflio dev, les tous derniers projets réalisés"}
+        description={"Suite de 70 mots"}
       />
-      <h2>Portfolio</h2>
+      <h2>PORTFOLIO</h2>
+      <ul>
+        {projects.map((project) => (
+          <li key={project.id}>
+            <Link href="projects/[id]" as={"projects/" + project.id}>
+              {project.title} <span>➡️</span>
+            </Link>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };

@@ -1,11 +1,12 @@
 import Layout from "../components/Layout";
 import "../styles/index.scss";
 
-export default function App({ Component, pageProps }) {
+function MyApp({ Component, pageProps }) {
   return (
     <Layout>
-      <Component {...pageProps} />
+      <Component {...pageProps} />;
     </Layout>
   );
 }
 
+export default MyApp;
